@@ -72,7 +72,7 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
                                 HomeActivity::class.java))
                             finish()
                         }
-                    }
+                    }.start()
                 }else{
                     Toast.makeText(applicationContext,
                         loginResponse.mensaje,
