@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -43,6 +44,11 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:5.0.7")
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0")
+
+    implementation("androidx.room:room-runtime:2.8.5")
+    ksp("androidx.room:room-compiler:2.8.5")
+    implementation("androidx.room:room-ktx:2.8.5")
+    androidTestImplementation("androidx.room:room-testing:2.8.5")
 
     implementation(libs.material)
     testImplementation(libs.junit)
