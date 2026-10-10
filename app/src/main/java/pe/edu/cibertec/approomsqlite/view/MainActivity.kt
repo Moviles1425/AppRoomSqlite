@@ -1,5 +1,6 @@
 package pe.edu.cibertec.approomsqlite.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -9,6 +10,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import pe.edu.cibertec.approomsqlite.R
 import pe.edu.cibertec.approomsqlite.databinding.ActivityMainBinding
+import pe.edu.cibertec.approomsqlite.db.PersonaRoomDatabase
+import pe.edu.cibertec.approomsqlite.db.entity.PersonaEntity
 import pe.edu.cibertec.approomsqlite.retrofit.ClienteRetrofit
 import pe.edu.cibertec.approomsqlite.retrofit.request.LoginRequest
 import pe.edu.cibertec.approomsqlite.retrofit.response.LoginResponse
@@ -51,9 +54,25 @@ class MainActivity : AppCompatActivity() , View.OnClickListener {
             ) {
                 val loginResponse = p1.body()!!
                 if(loginResponse.rpta){
-                    Toast.makeText(applicationContext,
+                    /*Toast.makeText(applicationContext,
                         "Login Exitoso",
-                        Toast.LENGTH_LONG).show()
+                        Toast.LENGTH_LONG).show()*/
+                    val persona = PersonaEntity(
+                        loginResponse.idpersona,
+                        loginResponse.nombres,
+                        loginResponse.apellidos,
+                        loginResponse.email,
+                        loginResponse.celular)
+                    Thread{
+                        val db = PersonaRoomDatabase.getDatabase(applicationContext)
+                        db.personaDao().eliminarTodo()
+                        db.personaDao().insertar(persona)
+                        runOnUiThread {
+                            startActivity(Intent(applicationContext,
+                                HomeActivity::class.java))
+                            finish()
+                        }
+                    }
                 }else{
                     Toast.makeText(applicationContext,
                         loginResponse.mensaje,
